@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" data-ng-app="BeMEAN">
+<head>
+  <meta charset="UTF-8">
+  <title>Be MEAN</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+  <style>
+    .wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body data-ng-controller="UserController as User" class="wrapper">
+
+  <section data-ng-controller="ConstantesController as Quimica">
+    <form>
+    </form>
+    <article>
+      <ul>
+        <li ng-repeat="constante in Quimica.constantes">
+          <h3>
+            {{ constante.nome }}
+          </h3>
+          <p>
+            Valor: {{ constante.valor }}
+          </p>
+          <p>
+            Unidade: {{ constante.unidade }}
+          </p>
+          <p>
+            Descrição: {{ constante.descricao }}
+          </p>
+        </li>
+      </ul>
+    </article>
+  </section>
+  <h1>{{ User.titulo }}</h1>
+  <label>Busca: <input ng-model="searchUser"></label>
+
+  <p>
+    <label>Name:
+      <input type="text" data-ng-model="form.User.name">
+    </label>
+    <br>
+    <label>Email:
+      <input type="email" data-ng-model="form.User.email">
+    </label>
+  </p>
+
+  <button data-ng-click="User.add(form.User)">ADD USER</button>
+  <span data-ng-init="predicate = 'name'; reverse = true; "></span>
+  <table>
+      <thead>
+        <tr>
+          <th data-ng-repeat="(key, value) in User.users[0]">{{ key }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-ng-repeat="user in User.users | orderBy:predicate:reverse | filter:searchUser ">
+          <td data-ng-repeat="(key, value) in user">{{ value }}</td>
+        </tr>
+      </tbody>
+    </thead>
+  </table>
+
+  <script src="./assets/js/angular.min.js"></script>
+  <script>
+    angular.module('BeMEAN', [])
+      .controller('UserController', UserController)
+      .controller('ConstantesController', ConstantesController);
+
+    function ConstantesController($http) {
+      var vm = this;
+      var url = 'http://localhost:3000/api/constante';
+      var method = 'GET';
+
+      $http({
+        method: method,
+        url: url
+      })
+      .then(function successCallback(response) {
+        vm.constantes = response.data;
+        console.log('SUCESSO: ', response.data)
+      }, function errorCallback(response) {
+        console.log('ERRO: ', response)
+      });
+    }
+
+    function UserController() {
+      var vm = this;
+      vm.titulo = "Be MEAN - Usuários";
+      vm.users = [
+        {name: 'Suissa', email: 'suissera@manoveio.com'}
+      , {name: 'João', email: 'joao@macioesedoso.com'}
+      , {name: 'Franciele', email: 'fran@quimica.com'}
+      ];
+
+      vm.add = add;
+      function add(user) {
+        vm.users.push(angular.copy(user));
+      }
+    }
+
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
