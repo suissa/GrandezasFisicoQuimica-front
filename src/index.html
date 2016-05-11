@@ -2,7 +2,7 @@
 <html lang="en" data-ng-app="BeMEAN">
 <head>
   <meta charset="UTF-8">
-  <title>Be MEAN</title>
+  <title>Grandezas Fisico-Quimica</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
   <style>
     .wrapper {
@@ -12,13 +12,14 @@
   </style>
 </head>
 <body data-ng-controller="UserController as User" class="wrapper">
-
+  <h1>Grandezas Fisico-Quimica</h1>
   <section data-ng-controller="ConstantesController as Quimica">
     <form>
     </form>
     <article>
+      <input type="text" ng-model="Quimica.search">
       <ul>
-        <li ng-repeat="constante in Quimica.constantes">
+        <li ng-repeat="constante in Quimica.constantes | filter:Quimica.search">
           <h3>
             {{ constante.nome }}
           </h3>
@@ -29,7 +30,7 @@
             Unidade: {{ constante.unidade }}
           </p>
           <p>
-            Descrição: {{ constante.descricao }}
+            Definicao: {{ constante.definicao }}
           </p>
         </li>
       </ul>
